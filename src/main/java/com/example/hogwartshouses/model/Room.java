@@ -13,7 +13,6 @@ public class Room {
 
     private int beds;
     private Gender gender;
-    //private List<Student> students;
     private HouseType houseType;
     private int availableBeds;
 
