@@ -15,7 +15,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query("SELECT r FROM Room r where r.availableBeds >0")
     List<Room> findAll();
-    @Query("SELECT r.id FROM Room r where r.gender = :gender and r.houseType = :houseType")
+    @Query("SELECT r.id FROM Room r where r.gender = :gender and r.houseType = :houseType and r.availableBeds > 0")
     Optional<Long> findFirstBy(@Param("gender") Gender gender, @Param("houseType") HouseType houseType);
 
     @Query("SELECT r FROM Room r where r.houseType = :houseType and r.gender = :gender")
