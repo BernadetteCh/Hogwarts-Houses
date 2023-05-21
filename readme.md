@@ -17,8 +17,8 @@ to assign Hogwarts students to a room of a specific house.
 Hermine and Draco came too late and I have to assign them to there room of their Hogwarts house. I also have to consider that in Hogwarts the rooms are seperated between female students and male students. 
 
 *add the name of the student as path of the endpoint to the url*
-![assign Hermine](./img/assignHermineapipostman.png)
-![assign Draco](./img/assignDracoapiPostman.png)
+![assign Hermine](CodeCool-projects/Modul4/Hogwarts-Houses/src/img/assignHermineapipostman.png)
+![assign Draco](CodeCool-projects/Modul4/Hogwarts-Houses/src/img/assignDracoapiPostman.png)
 
 *Put request to assign Student to their correct house*
 ```js 
@@ -53,14 +53,14 @@ Ron has a rat as house animal.
 So he can't stay in a room where one of the students has a cat.
 
 Ron can be assigned as path of the url
-![assign Ron](./img/ronapi.png)
+![assign Ron](CodeCool-projects/Modul4/Hogwarts-Houses/src/img/ronapi.png)
 
 Luckily neither Harry and Neville have a cat as house animal so Ron can stay with them
 
 Before put request
-![Ron assigned](./img/ron.png)
+![Ron assigned](CodeCool-projects/Modul4/Hogwarts-Houses/src/img/ron.png)
 After put request
-![Ron assigned](./img/ronassigned.png)
+![Ron assigned](CodeCool-projects/Modul4/Hogwarts-Houses/src/img/ronassigned.png)
 
 Ron is now assigned to the same room as Harry and Neville and his status of has_room is also updated.  
 
