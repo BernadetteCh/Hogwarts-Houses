@@ -50,7 +50,6 @@ public class endpoints {
         Optional<Room> room = roomRepository.findRoomBy(student.getGender(),student.getHouseType());
         Optional<Boolean> cat = room.get().getStudents().stream()
                 .map(student1 -> student1.getHousePet().equals(HousePet.CAT)).findFirst();
-       System.out.println(cat.get().booleanValue()+ "!!!!!!!!!!!!!!!!!!!!");
         if(cat.get().booleanValue() == false) {
             studentRepository.findById(room.get().getId());
             return studentRepository.findById(room.get().getId(), name);
