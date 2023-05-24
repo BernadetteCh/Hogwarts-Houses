@@ -38,7 +38,6 @@ public class DatabasePopoulation {
         Student student6 = new Student("Ron", "Weasly", HousePet.RAT, HouseType.GRYFFINDOR, false, Gender.MALE);
         return List.of(student1, student2, student3, student4, student5, student6);
     }
-
     private List<Room> getRooms() {
         Room room1 = new Room(4, HouseType.GRYFFINDOR, 2, Gender.FEMALE);
         Room room2 = new Room(6, HouseType.GRYFFINDOR, 3, Gender.MALE);
