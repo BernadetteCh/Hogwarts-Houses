@@ -11,6 +11,7 @@ import java.util.List;
 
 @Configuration
 public class DatabasePopoulation {
+
     @Bean
     ApplicationRunner populate(RoomRepository roomRepository, StudentRepository studentRepository) {
         return args -> {
@@ -18,7 +19,14 @@ public class DatabasePopoulation {
             List<Student> students = getStudents();
             roomRepository.saveAll(rooms);
             studentRepository.saveAll(students);
+            saveDefaultData(studentRepository);
         };
+    }
+
+    private static void saveDefaultData(StudentRepository studentRepository) {
+        studentRepository.findById(2,"Harry");
+        studentRepository.findById(2,"Neville");
+        studentRepository.findById(3,"Luna");
     }
 
     private List<Student> getStudents() {
