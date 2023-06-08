@@ -24,7 +24,6 @@ class HogwartsServiceTest {
         when(studentRepository.findStudentByFirstNameAndHasRoomFalse(student.getFirstName())).thenReturn(student);
         when(roomRepository.findRoomByGenderAndHouseType(student.getGender(), student.getHouseType())).thenReturn(Optional.of(room));
         assertEquals((int) room.getId(), hogwartsService.assignStudent(student.getFirstName()));
-
     }
 
     @Test
