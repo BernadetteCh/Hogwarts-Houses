@@ -9,37 +9,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 @CrossOrigin(origins = "*")
-public class endpoints {
-    private final HogwartsService studentService;
+public class HogwartsEndpoints {
+    private final HogwartsService hogwartsService;
 
-    public endpoints(HogwartsService studentService) {
-        this.studentService = studentService;
+    public HogwartsEndpoints(HogwartsService hogwartsService) {
+        this.hogwartsService = hogwartsService;
     }
 
-    @GetMapping("empty-rooms")
-    public List<Room> getAllEmptyRooms(){
-        return studentService.findAllRooms();
+    @GetMapping("rooms")
+    public List<Room> getAll(){
+        return hogwartsService.findAllRooms();
     }
 
     @PostMapping("create-room")
     public Room saveRoom(@RequestBody Room room) {
-        return studentService.saveRoom(room);
-
+        return hogwartsService.saveRoom(room);
     }
 
     @PostMapping("create-student")
     public Student saveStudent(@RequestBody Student student) {
-        return studentService.saveStudent(student);
-
+        return hogwartsService.saveStudent(student);
     }
 
     @PutMapping("assignStudent/{name}")
     public Integer assignStudentToHouse(@PathVariable String name){
-        return studentService.assignStudent(name);
+        return hogwartsService.assignStudent(name);
     }
 
     @PutMapping("rooms/rat-owners/{name}")
     public Integer assignRonToHouse(@PathVariable String name) {
-       return studentService.findARoomForRatOwner(name);
+       return hogwartsService.findARoomForRatOwner(name);
     }
 }
