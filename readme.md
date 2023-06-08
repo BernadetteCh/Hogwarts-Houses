@@ -22,12 +22,10 @@ Hermine and Draco came too late and I have to assign them to there room of their
 
 *Put request to assign Student to their correct house*
 ```js 
-@PutMapping("assignStudent/{name}")
-    public Integer assignStudentToHouse(@PathVariable String name){
-        Student student = studentRepository.findByNameAndHasRoomNot(name);
-        Optional<Long> roomId = roomRepository.findFirstBy(student.getGender(), student.getHouseType());
-        studentRepository.findById(roomId.get());
-        return studentRepository.findById(roomId.get(), name);
+@PutMapping("assignStudent/{name}"){
+    Student student = studentRepository.findStudentByFirstNameAndHasRoomFalse(name);
+    Optional<Room> room = roomRepository.findRoomByGenderAndHouseType(student.getGender(), student.getHouseType());
+return room.isPresent() ? studentRepository.assignStudentToRoom(room.get().getId(),name) : null;
     }
 ```
 
@@ -37,17 +35,16 @@ which also has enough space for them.
 So is Draco in Slytherin house and Hermine in a house of 
 Gryffindor.*
 ```js
- @Query("SELECT r.id FROM Room r where r.gender = :gender and r.houseType = :houseType and r.availableBeds > 0")
-    Optional<Long> findFirstBy(@Param("gender") Gender gender, @Param("houseType") HouseType houseType);
+    Optional<Room> findRoomByGenderAndHouseType(Gender gender, HouseType houseType);
 
 ```
 *At same time the amount of available 
 beds of the room gets also updated*
 ```js
-  @Modifying
-    @Transactional
-    @Query(value="UPDATE Room r SET r.availableBeds = r.availableBeds-1  WHERE r.id = :roomId")
-    Integer findById(long roomId);
+   @Modifying
+   @Transactional
+   @Query(value="UPDATE Room r SET r.availableBeds = r.availableBeds-1  WHERE r.id = :roomId")
+   Integer updateRoom(@Param("roomId") long roomId);
 ```
 Ron has a rat as house animal. 
 So he can't stay in a room where one of the students has a cat.
@@ -72,7 +69,6 @@ public class Room {
     @Id
     @GeneratedValue
     private long id;
-
     private int beds;
     private Gender gender;
     private HouseType houseType;
@@ -103,4 +99,49 @@ public class Student {
     private Room room;
 ```
 
+### Tests
+## Tests for the enpoints codesnippet
+```js
+  @Test
+    void getAllRooms() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get(allRooms)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status()
+                        .isOk());
+    }
+ ```
 
+
+```js
+ @Test
+    void saveStudent() throws Exception {
+        Room room = new Room(4, HouseType.GRYFFINDOR,2, Gender.FEMALE);
+        Student student = new Student("Harry", "Potter", HousePet.OWL, HouseType.GRYFFINDOR, true, Gender.MALE);
+        student.setRoom(room);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(student);
+
+        when(hogwartsService.saveStudent(student)).thenReturn(student);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post(createStudent)
+                        .contentType(APPLICATION_JSON).content(json))
+                .andExpect(status()
+                        .isOk());
+        verify(hogwartsService).saveStudent(student);
+    }
+```
+## Test for the HogwartsService class codesnippet
+@Test
+```js
+    @Test
+    void assignStudent() {
+        Room room = new Room(4, HouseType.GRYFFINDOR, 2, Gender.FEMALE);
+        Student student = new Student("Hermine", "Granger", HousePet.CAT, HouseType.GRYFFINDOR, false, Gender.FEMALE);
+        room.setStudents(Set.of(student));
+        when(studentRepository.findStudentByFirstNameAndHasRoomFalse(student.getFirstName())).thenReturn(student);
+        when(roomRepository.findRoomByGenderAndHouseType(student.getGender(), student.getHouseType())).thenReturn(Optional.of(room));
+        assertEquals((int) room.getId(), hogwartsService.assignStudent(student.getFirstName()));
+    }
+```
