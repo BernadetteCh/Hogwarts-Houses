@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-public class DatabasePopoulation {
+public class DatabasePopulation {
 
     @Bean
     ApplicationRunner populate(RoomRepository roomRepository, StudentRepository studentRepository) {
@@ -24,9 +24,9 @@ public class DatabasePopoulation {
     }
 
     private static void saveDefaultData(StudentRepository studentRepository) {
-        studentRepository.findById(2,"Harry");
-        studentRepository.findById(2,"Neville");
-        studentRepository.findById(3,"Luna");
+        studentRepository.updateStudent(2, "Harry");
+        studentRepository.updateStudent(2, "Neville");
+        studentRepository.updateStudent(3, "Luna");
     }
 
     private List<Student> getStudents() {
@@ -38,6 +38,7 @@ public class DatabasePopoulation {
         Student student6 = new Student("Ron", "Weasly", HousePet.RAT, HouseType.GRYFFINDOR, false, Gender.MALE);
         return List.of(student1, student2, student3, student4, student5, student6);
     }
+
     private List<Room> getRooms() {
         Room room1 = new Room(4, HouseType.GRYFFINDOR, 2, Gender.FEMALE);
         Room room2 = new Room(6, HouseType.GRYFFINDOR, 3, Gender.MALE);
