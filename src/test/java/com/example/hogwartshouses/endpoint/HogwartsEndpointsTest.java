@@ -35,7 +35,7 @@ class HogwartsEndpointsTest {
     String ratOwners = "/rooms/rat-owners/Ron";
 
     @Test
-    void getAllEmptyRooms() throws Exception {
+    void getAllRooms() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .get(allRooms)
                         .contentType(APPLICATION_JSON))
