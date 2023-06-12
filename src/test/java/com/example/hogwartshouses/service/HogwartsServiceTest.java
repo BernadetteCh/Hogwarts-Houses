@@ -1,6 +1,5 @@
 package com.example.hogwartshouses.service;
 
-import com.example.hogwartshouses.endpoint.HogwartsEndpoints;
 import com.example.hogwartshouses.model.*;
 import org.junit.jupiter.api.Test;
 

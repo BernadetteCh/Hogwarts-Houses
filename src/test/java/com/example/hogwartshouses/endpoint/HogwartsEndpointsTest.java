@@ -45,7 +45,7 @@ class HogwartsEndpointsTest {
 
     @Test
     void saveRoom() throws Exception {
-        Room room = new Room(4, HouseType.GRYFFINDOR,2, Gender.FEMALE);
+        Room room = new Room(4, HouseType.GRYFFINDOR, 2, Gender.FEMALE);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(room);
 
@@ -60,12 +60,19 @@ class HogwartsEndpointsTest {
 
     @Test
     void saveStudent() throws Exception {
-        Room room = new Room(4, HouseType.GRYFFINDOR,2, Gender.FEMALE);
-        Student student = new Student("Harry", "Potter", HousePet.OWL, HouseType.GRYFFINDOR, true, Gender.MALE);
+        Room room = new Room(4, HouseType.GRYFFINDOR, 2, Gender.MALE);
+        Student student = new Student("Harry", "Potter", HousePet.OWL, HouseType.GRYFFINDOR, false, Gender.MALE);
         student.setRoom(room);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(student);
 
+        String json = """
+                {"id":0,"firstName":"Harry",
+                "lastName":"Potter",
+                "housePet":"OWL",
+                "houseType":"GRYFFINDOR",
+                "gender":"MALE",
+                "hasRoom":false,
+                "room":{"id":0,"beds":4,"gender":"MALE","houseType":"GRYFFINDOR","availableBeds":2}}               
+                 """;
         when(hogwartsService.saveStudent(student)).thenReturn(student);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -78,7 +85,7 @@ class HogwartsEndpointsTest {
 
     @Test
     void assignStudentToHouse() throws Exception {
-        Room room = new Room(4, HouseType.GRYFFINDOR,2, Gender.FEMALE);
+        Room room = new Room(4, HouseType.GRYFFINDOR, 2, Gender.FEMALE);
         Student student = new Student("Hermine", "Granger", HousePet.OWL, HouseType.GRYFFINDOR, false, Gender.FEMALE);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(student);
@@ -91,8 +98,8 @@ class HogwartsEndpointsTest {
     }
 
     @Test
-    void assignRonToHouse() throws Exception{
-        Room room = new Room(4, HouseType.GRYFFINDOR,2, Gender.MALE);
+    void assignRonToHouse() throws Exception {
+        Room room = new Room(4, HouseType.GRYFFINDOR, 2, Gender.MALE);
         Student student = new Student("Ron", "Weasly", HousePet.RAT, HouseType.GRYFFINDOR, false, Gender.MALE);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(student);

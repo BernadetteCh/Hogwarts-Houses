@@ -1,12 +1,13 @@
 package com.example.hogwartshouses.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
-@Table(name="students")
+@Table(name = "students")
 public class Student {
     @Id
     @GeneratedValue
@@ -20,8 +21,9 @@ public class Student {
     private Gender gender;
     private boolean hasRoom;
 
+    @JsonBackReference
     @ManyToOne
-    @JoinColumn(name="room_id")
+    @JoinColumn(name = "room_id")
     private Room room;
 
     public Student(String firstName, String lastName, HousePet housePet, HouseType houseType, boolean hasRoom, Gender gender) {
@@ -41,13 +43,12 @@ public class Student {
         return gender;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-
     public Room getRoom() {
         return room;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public void setRoom(Room room) {
@@ -102,7 +103,7 @@ public class Student {
         this.hasRoom = hasRoom;
     }
 
-    @Override
+   @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -110,12 +111,12 @@ public class Student {
         return id == student.id && hasRoom == student.hasRoom && firstName.equals(student.firstName) && lastName.equals(student.lastName) && housePet == student.housePet && houseType == student.houseType && gender == student.gender && room.equals(student.room);
     }
 
-    @Override
+  @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, housePet, houseType, gender, hasRoom, room);
+        return Objects.hash(id, firstName, lastName, housePet, houseType, gender, hasRoom, room.getId());
     }
 
-    /*
+
     @Override
     public String toString() {
         return "Student{" +
@@ -128,5 +129,5 @@ public class Student {
                 ", hasRoom=" + hasRoom +
                 ", room=" + room +
                 '}';
-    }*/
+    }
 }

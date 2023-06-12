@@ -14,6 +14,11 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 
     @Modifying
     @Transactional
+    @Query(value = "UPDATE Student s SET s.room.id = :roomId, s.hasRoom = true WHERE s.firstName= :name")
+    Integer findById(long roomId,String name);
+
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE Student s SET s.room.id = :roomId, s.hasRoom = true WHERE s.firstName= :firstName")
     Integer updateStudent(@Param("roomId")long roomId,@Param("firstName")String firstName);
 

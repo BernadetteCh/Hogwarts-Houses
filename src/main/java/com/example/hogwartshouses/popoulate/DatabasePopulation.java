@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.Set;
 
 @Configuration
 public class DatabasePopulation {
@@ -24,9 +25,13 @@ public class DatabasePopulation {
     }
 
     private static void saveDefaultData(StudentRepository studentRepository) {
-        studentRepository.updateStudent(2, "Harry");
+       /* studentRepository.updateStudent(2, "Harry");
         studentRepository.updateStudent(2, "Neville");
-        studentRepository.updateStudent(3, "Luna");
+        studentRepository.updateStudent(3, "Luna");*/
+        studentRepository.findById(2,"Harry");
+        studentRepository.findById(2, "Neville");
+        studentRepository.findById(3, "Luna");
+
     }
 
     private List<Student> getStudents() {

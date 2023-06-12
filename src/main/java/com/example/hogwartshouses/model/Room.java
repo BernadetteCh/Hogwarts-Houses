@@ -1,6 +1,7 @@
 package com.example.hogwartshouses.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -56,6 +57,7 @@ public class Room {
         this.beds = beds;
     }
 
+    @JsonManagedReference
     public Set<Student> getStudents() {
         return students;
     }
@@ -89,12 +91,12 @@ public class Room {
         return id == room.id && beds == room.beds && availableBeds == room.availableBeds && gender == room.gender && houseType == room.houseType && Objects.equals(students, room.students);
     }
 
-    @Override
+   @Override
     public int hashCode() {
         return Objects.hash(id, beds, gender, houseType, availableBeds, students);
     }
 
-   /* @Override
+    @Override
     public String toString() {
         return "Room{" +
                 "id=" + id +
@@ -103,6 +105,6 @@ public class Room {
                 ", houseType=" + houseType +
                 ", availableBeds=" + availableBeds +
                 '}';
-    }*/
+    }
 }
 
