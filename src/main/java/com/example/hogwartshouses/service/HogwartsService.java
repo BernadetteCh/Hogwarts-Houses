@@ -45,7 +45,6 @@ public class HogwartsService {
         System.out.println(room.get());
         Optional<Boolean> cat = room.get().getStudents().stream()
                 .map(student1 -> student1.getHousePet().equals(HousePet.CAT)).findFirst();
-        System.out.println(cat.get().booleanValue()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         if(cat.get().booleanValue() == false) {
             studentRepository.findById(room.get().getId());
             roomRepository.updateRoom(room.get().getId());
