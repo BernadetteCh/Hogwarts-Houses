@@ -24,7 +24,7 @@ Hermine and Draco came too late and I have to assign them to there room of their
 ![assign Student to a Hogwarts Room](./img/assignStudentToAHogwartsRoom.png)
 
 
-*In Roomrepository interface which extends the JpaRepository, 
+*In roomrepository interface which extends the JpaRepository, 
 methods and queries are responsible to find a room of their Hogwarts house.
 So is Draco in Slytherin house and Hermine in a house of 
 Gryffindor.*
