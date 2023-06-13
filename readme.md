@@ -21,31 +21,23 @@ Hermine and Draco came too late and I have to assign them to there room of their
 ![assign Draco](./img/assignDracoapiPostman.png)
 
 *Put request to assign Student to their correct house*
-```js 
-@PutMapping("assignStudent/{name}"){
-    Student student = studentRepository.findStudentByFirstNameAndHasRoomFalse(name);
-    Optional<Room> room = roomRepository.findRoomByGenderAndHouseType(student.getGender(), student.getHouseType());
-return room.isPresent() ? studentRepository.assignStudentToRoom(room.get().getId(),name) : null;
-    }
-```
+![assign Student to a Hogwarts Room](./img/assignStudentToAHogwartsRoom.png)
+
 
 *In Roomrepository interface which extends the JpaRepository, 
-methods and queries are responsible to find a room of their Hogwarts house,
-which also has enough space for them.
+methods and queries are responsible to find a room of their Hogwarts house.
 So is Draco in Slytherin house and Hermine in a house of 
 Gryffindor.*
-```js
-    Optional<Room> findRoomByGenderAndHouseType(Gender gender, HouseType houseType);
 
-```
+![assign Student to a Hogwarts Room](./img/findRoomByHouseType.png)
+
+
 *At same time the amount of available 
 beds of the room gets also updated*
-```js
-   @Modifying
-   @Transactional
-   @Query(value="UPDATE Room r SET r.availableBeds = r.availableBeds-1  WHERE r.id = :roomId")
-   Integer updateRoom(@Param("roomId") long roomId);
-```
+
+![assign Student to a Hogwarts Room](./img/updateAvailableBeds.png)
+
+
 Ron has a rat as house animal. 
 So he can't stay in a room where one of the students has a cat.
 
@@ -62,86 +54,22 @@ After put request
 Ron is now assigned to the same room as Harry and Neville and his status of has_room is also updated.  
 
 To connect the entity Student and entity Room with each other , the bidirectional association is used
-```js
-@Entity
-@Table(name = "rooms")
-public class Room {
-    @Id
-    @GeneratedValue
-    private long id;
-    private int beds;
-    private Gender gender;
-    private HouseType houseType;
-    private int availableBeds;
+To not get an error of infinite recursion annotation of  "@JsonManagedReference" in the Room entity class and
+"@JsonBackReference" in the Student entity class are used. 
 
-    @OneToMany(mappedBy = "room")
-    private Set<Student> students;
-```
-```js
-@Entity
-@Table(name="students")
-public class Student {
-    @Id
-    @GeneratedValue
-    private long id;
-    private String firstName;
-    private String lastName;
-    private HousePet housePet;
-    private HouseType houseType;
-    private Gender gender;
+![RoomEntityClass](./img/roomEntity.png)
 
-    public Gender getGender() {
-        return gender;
-    }
+![StudentEntityClass](./img/studentEntity.png)
 
-    @ManyToOne
-    @JoinColumn(name="room_id")
-    private Room room;
-```
 
 ### Tests
+To test the endpoints WebMvcTest is used. 
+
 ## Tests for the enpoints codesnippet
-```js
-  @Test
-    void getAllRooms() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get(allRooms)
-                        .contentType(APPLICATION_JSON))
-                .andExpect(status()
-                        .isOk());
-    }
- ```
+![getAllRoomsTest](./img/getAllRoomsTest.png)
 
+![saveStudentTest](./img/saveStudentTest.png)
 
-```js
- @Test
-    void saveStudent() throws Exception {
-        Room room = new Room(4, HouseType.GRYFFINDOR,2, Gender.FEMALE);
-        Student student = new Student("Harry", "Potter", HousePet.OWL, HouseType.GRYFFINDOR, true, Gender.MALE);
-        student.setRoom(room);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(student);
-
-        when(hogwartsService.saveStudent(student)).thenReturn(student);
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post(createStudent)
-                        .contentType(APPLICATION_JSON).content(json))
-                .andExpect(status()
-                        .isOk());
-        verify(hogwartsService).saveStudent(student);
-    }
-```
 ## Test for the HogwartsService class codesnippet
-@Test
-```js
-    @Test
-    void assignStudent() {
-        Room room = new Room(4, HouseType.GRYFFINDOR, 2, Gender.FEMALE);
-        Student student = new Student("Hermine", "Granger", HousePet.CAT, HouseType.GRYFFINDOR, false, Gender.FEMALE);
-        room.setStudents(Set.of(student));
-        when(studentRepository.findStudentByFirstNameAndHasRoomFalse(student.getFirstName())).thenReturn(student);
-        when(roomRepository.findRoomByGenderAndHouseType(student.getGender(), student.getHouseType())).thenReturn(Optional.of(room));
-        assertEquals((int) room.getId(), hogwartsService.assignStudent(student.getFirstName()));
-    }
-```
+
+![assignStudentTest](./img/assignStudentTest.png)
